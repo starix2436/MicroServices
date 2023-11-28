@@ -1,21 +1,14 @@
-from .app import db
+from app import db
 from datetime import datetime
 
 
 class BaseModel(db.Model):
-    __abstract__ = True
+    __tablename__ = "base_model"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    is_active = db.Column(db.Boolean(), server_default="true", index=True)
-    created_date = db.Column(db.DateTime(), server_default=utcnow())
-    updated_date = db.Column(
-        db.DateTime(),
-        server_default=datetime.utcnow(),
-        server_onupdate=datetime.utcnow(),
-        onupdate=datetime.utcnow(),
-    )
-    created_by = db.Column(db.String(500), nullable=True, index=True)
-    updated_by = db.Column(db.String(500), nullable=True, index=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
 
     def __repr__(self):
         return f"{self.__class__.__name__}: {self.id}"
