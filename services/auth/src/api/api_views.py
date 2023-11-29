@@ -1,8 +1,9 @@
 from flask_restx import Resource
 from flask.views import MethodView
-from app import swagger_api
+from app import swagger_api, db
 from flask import request
-from werkzeug.security import generate_password_hash
+
+# from werkzeug.security import generate_password_hash
 from models import User
 from .serializers import signup_model, login_model
 
@@ -25,9 +26,12 @@ class sign_up(Resource, MethodView):
         new_acc = User(
             username=data.get("username"),
             email=data.get("email"),
-            password_hash=generate_password_hash(data.get("password")),
+            password=data.get("password"),
+            first_name=data.get("first_name"),
+            last_name=data.get("last_name"),
         )
-        new_acc.save()
+        db.session.add(new_acc)
+        db.session.commit()
         return "success"
 
 
