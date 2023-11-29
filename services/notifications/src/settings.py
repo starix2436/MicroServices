@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import os
 from datetime import datetime, timedelta
 
@@ -19,4 +17,3 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 AUTH_GRPC_CHANNEL = "localhost:4001"
 NOTIFICATION_GRPC_CHANNEL = "localhost:4002"
 FLASK_ADMIN_SWATCH='cerulean'
->>>>>>> Stashed changes
