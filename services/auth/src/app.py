@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
-from flask_restx import Api
+from flask_restx import Api, Namespace, apidoc
 
 app = Flask(__name__)
 app.config.from_pyfile("settings.py")
@@ -12,10 +12,22 @@ bcrypt = Bcrypt(app)
 url_prefix = "/auth"
 from admin import *
 
-api = Api(app)
-from api.api_views import ns
+swagger_desc = ""
 
-api.add_namespace(ns)
+apidoc.apidoc.url_prefix = url_prefix
+swagger_api = Api(
+    app,
+    version="v1.0",
+    title="RELYbill",
+    description=swagger_desc,
+    doc=f"{url_prefix}/swagger/",
+    authorizations={
+        "Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}
+    },
+    prefix=url_prefix,
+)
+# api = Api(app, version="v1.0", doc=f"{url_prefix}/swagger/", prefix=url_prefix)
+from api.api_urls import *
 
 if __name__ == "__main__":
     app.run(debug=True)

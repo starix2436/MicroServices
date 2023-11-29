@@ -1,9 +1,9 @@
-from flask_restx import Resource, Namespace
+from flask_restx import Resource
+from flask.views import MethodView
+from app import swagger_api
 
-ns = Namespace("api")
 
-
-@ns.route("/hello")
-class Hello(Resource):
+class Hello(Resource, MethodView):
+    @swagger_api.doc()
     def get(self):
         return {"hello": "restx"}
