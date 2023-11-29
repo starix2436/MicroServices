@@ -8,6 +8,7 @@ app.config.from_pyfile("settings.py")
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
+url_prefix = "/auth"
 from admin import *
 
 if __name__ == "__main__":
