@@ -10,11 +10,13 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 url_prefix = "/auth"
+
 from admin import *
 
 swagger_desc = ""
 
 apidoc.apidoc.url_prefix = url_prefix
+
 swagger_api = Api(
     app,
     version="v1.0",
@@ -26,7 +28,7 @@ swagger_api = Api(
     },
     prefix=url_prefix,
 )
-# api = Api(app, version="v1.0", doc=f"{url_prefix}/swagger/", prefix=url_prefix)
+
 from api.api_urls import *
 
 if __name__ == "__main__":
