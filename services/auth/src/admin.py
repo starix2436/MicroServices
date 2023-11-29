@@ -1,10 +1,11 @@
 from flask_admin.contrib.sqla import ModelView
 from app import app, db
 from flask_admin import Admin
-from models import AuthToken, OTPDevice
+from models import BaseModel
 
 
-admin = Admin(name="Auth", template_mode="bootstrap3")
+url_prefix = "/auth"
 
-admin.add_view(ModelView(AuthToken, db.session))
-admin.add_view(ModelView(OTPDevice, db.session))
+admin = Admin(app, name="Auth", template_mode="bootstrap3", url=f"{url_prefix}/admin")
+
+admin.add_view(ModelView(BaseModel, db.session))
