@@ -6,7 +6,7 @@ from utils import UserManager, LoginManager
 
 # from werkzeug.security import generate_password_hash
 from models import User
-from .serializers import signup_model, login_model
+from .swagger import signup_model, login_model
 
 
 class Hello(Resource, MethodView):
