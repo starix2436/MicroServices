@@ -3,6 +3,7 @@ from datetime import datetime
 from ulid import new as generate_ulid
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.sql import func
+from sqlalchemy_utils import PhoneNumberType
 
 
 class ULIDType(TypeDecorator):
@@ -49,6 +50,9 @@ class User(BaseModel):
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    phone_numbers = db.relationship(
+        "PhoneNumber", back_populates="user", lazy="dynamic"
+    )
 
     def __repr__(self):
         return f"{self.__class__.__name__}: {self.username}"
@@ -56,3 +60,12 @@ class User(BaseModel):
     @classmethod
     def get_user(cls, **criteria):
         return cls.query.filter_by(**criteria, is_active=True)
+
+
+class PhoneNumber(BaseModel):
+    mobile = db.Column(db.String(20), unique=True, nullable=False)
+    mobile2 = db.Column(db.String(20), unique=True)
+    home = db.Column(db.String(20), unique=True)
+    office = db.Column(db.String(20), unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), unique=True)
+    user = db.relationship("User", back_populates="phone_numbers")
