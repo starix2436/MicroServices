@@ -52,3 +52,7 @@ class User(BaseModel):
 
     def __repr__(self):
         return f"{self.__class__.__name__}: {self.username}"
+
+    @classmethod
+    def get_user(cls, *criteria):
+        return cls.query.filter_by(*criteria, is_active=True)

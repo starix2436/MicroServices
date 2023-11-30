@@ -14,7 +14,7 @@ class Hello(Resource, MethodView):
         return {"hello": "restx"}
 
 
-class sign_up(Resource, MethodView):
+class SignUp(Resource, MethodView):
     @swagger_api.doc()
     @swagger_api.expect(signup_model)
     def post(self):
@@ -42,7 +42,7 @@ class Login(Resource, MethodView):
         data = request.get_json()
         email = data.get("email")
         password = data.get("password")
-        user = User.query.filter_by(email=email).first()
+        user = User.get_user(email=email).first()
 
         if user and password == user.password:
             return {
