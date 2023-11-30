@@ -55,5 +55,4 @@ class User(BaseModel):
 
     @classmethod
     def get_user(cls, **criteria):
-        print(criteria, "_-------------------------------------------")
         return cls.query.filter_by(**criteria, is_active=True)
