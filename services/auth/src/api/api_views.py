@@ -1,6 +1,6 @@
 from flask_restx import Resource
 from flask.views import MethodView
-from app import swagger_api, db
+from app import swagger_api, db, bcrypt
 from flask import request
 
 # from werkzeug.security import generate_password_hash
@@ -23,10 +23,13 @@ class SignUp(Resource, MethodView):
         if not data:
             return {"message": "No input data provided"}
 
+        hashed_password = bcrypt.generate_password_hash(data.get("password")).decode(
+            "utf-8"
+        )
         new_acc = User(
             username=data.get("username"),
             email=data.get("email"),
-            password=data.get("password"),
+            password=hashed_password,
             first_name=data.get("first_name"),
             last_name=data.get("last_name"),
         )
@@ -43,8 +46,8 @@ class Login(Resource, MethodView):
         email = data.get("email")
         password = data.get("password")
         user = User.get_user(email=email).first()
-
-        if user and password == user.password:
+        print(user)
+        if user and bcrypt.check_password_hash(user.password, password):
             return {
                 "message": "Login successful",
                 "user_id": user.id,
