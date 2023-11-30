@@ -2,7 +2,7 @@ from flask_restx import Resource
 from flask.views import MethodView
 from app import swagger_api, db
 from flask import request
-from utils import signup, login
+from utils import UserManager, LoginManager
 
 # from werkzeug.security import generate_password_hash
 from models import User
@@ -20,7 +20,7 @@ class SignUp(Resource, MethodView):
     @swagger_api.expect(signup_model)
     def post(self):
         data = request.get_json()
-        message = signup(data)
+        message = UserManager().signup(data)
         return message
 
 
@@ -29,5 +29,5 @@ class Login(Resource, MethodView):
     @swagger_api.expect(login_model)
     def post(self):
         data = request.get_json()
-        message = login(data)
+        message = LoginManager().login(data)
         return message
