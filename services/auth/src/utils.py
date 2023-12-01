@@ -1,27 +1,29 @@
-#from flask import jsonify
+# from flask import jsonify
 from app import db, bcrypt
 from models import User
 from flask import jsonify
 from api.serializers import SignSchema
 from loggers import logger
+from flask import jsonify
+
 
 class UserManager:
+    def details(self, id):
+        user = User.get_user_details(id)
+        # show phone numbers also
+        return user
 
     def signup(self, data):
-        
-        
         if not data:
             return {"message": "No input data provided"}
         email = data.get("email")
         user = User.get_user(email=email).first()
-        
+
         try:
             if user == None:
-
-               
-                hashed_password = bcrypt.generate_password_hash(data.get("password")).decode(
-                    "utf-8"
-                )
+                hashed_password = bcrypt.generate_password_hash(
+                    data.get("password")
+                ).decode("utf-8")
                 new_acc = User(
                     username=data.get("username"),
                     email=data.get("email"),
@@ -31,32 +33,26 @@ class UserManager:
                 )
                 db.session.add(new_acc)
                 db.session.commit()
-                serializer=SignSchema()
-                #result=serializer.load(new_acc)
-                person=serializer.dump(new_acc)
-                print(person)
-                return jsonify(person)
+
+                return {"message": "success"}
             else:
                 return {"message": "enter different email"}
         except Exception as e:
-            logger.error("some error occured",exc_info=e)
+            logger.error("some error occured", exc_info=e)
             return {"message": "an error occured "}
 
-            
-       
 
 class LoginManager:
-
     def login(self, data):
         email = data.get("email")
         password = data.get("password")
         try:
             user = User.get_user(email=email).first()
-        
+            print(user)
             if user and bcrypt.check_password_hash(user.password, password):
                 return {"message": "Login successfull"}
             else:
                 return {"message": "Login unsuccessful"}
         except Exception as e:
-            logger.error("some error occured",exc_info=e)
+            logger.error("some error occured", exc_info=e)
             return {"message": "an error occured "}
