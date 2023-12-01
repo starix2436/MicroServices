@@ -3,7 +3,7 @@ from flask.views import MethodView
 from app import swagger_api, db
 from flask import request, jsonify
 from utils import UserManager, LoginManager
-from api.serializers import SignSchema
+
 
 # from serializers import UserSchema
 
@@ -16,6 +16,7 @@ from .swagger import (
 )
 
 from marshmallow import ValidationError, post_load
+from api.serializers import SignSchema, UserSchema
 
 
 class Hello(Resource, MethodView):
@@ -58,6 +59,6 @@ class UserDetails(Resource, MethodView):
         id = request.args.get("id")
         user = UserManager().details(id)
         print(user, "---------------")
-        serialzier = SignSchema()
-        data = serialzier.load(user)
-        return jsonify(data)
+        data = UserSchema().dump(user)
+        print(data, "---------------")
+        return data

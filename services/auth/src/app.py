@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_restx import Api, Namespace, apidoc
 
+
 app = Flask(__name__)
 app.config.from_pyfile("settings.py")
 db = SQLAlchemy(app)
@@ -28,6 +29,10 @@ swagger_api = Api(
     },
     prefix=url_prefix,
 )
+
+from flask_marshmallow import Marshmallow
+
+ma = Marshmallow(app)
 
 from api.api_urls import *
 

@@ -1,10 +1,7 @@
 # from flask import jsonify
 from app import db, bcrypt
 from models import User
-from flask import jsonify
-from api.serializers import SignSchema
 from loggers import logger
-from flask import jsonify
 
 
 class UserManager:
