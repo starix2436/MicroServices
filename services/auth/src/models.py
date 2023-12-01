@@ -64,9 +64,13 @@ class User(BaseModel):
     @classmethod
     def get_user_details(cls, *criteria):
         return cls.query.get(*criteria)
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
 
 class PhoneNumber(BaseModel):
+
     mobile = db.Column(db.String(20), unique=True, nullable=False)
     mobile2 = db.Column(db.String(20), unique=True)
     home = db.Column(db.String(20), unique=True)
