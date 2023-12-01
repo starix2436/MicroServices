@@ -53,7 +53,6 @@ class Login(Resource, MethodView):
 
 
 class UserDetails(Resource, MethodView):
-    # @swagger_api.expect(user_details_model)
     @swagger_api.doc(params=contract_consumer_list_request_params)
     def get(self):
         id = request.args.get("id")
@@ -61,4 +60,11 @@ class UserDetails(Resource, MethodView):
         print(user, "---------------")
         data = UserSchema().dump(user)
         print(data, "---------------")
+        return data
+
+class AllDetail(Resource,MethodView):
+    @swagger_api.doc()
+    def get(self):
+        user = UserManager().alldetails()
+        data = UserSchema(many=True).dump(user)
         return data

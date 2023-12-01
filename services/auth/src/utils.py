@@ -9,6 +9,9 @@ class UserManager:
         user = User.get_user_details(id)
         # show phone numbers also
         return user
+    def alldetails(self):
+        user=User.get_all()
+        return user
 
     def signup(self, data):
         if not data:
