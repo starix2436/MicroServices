@@ -1,13 +1,14 @@
 from flask_restx import Resource
 from flask.views import MethodView
 from app import swagger_api, db
-from flask import request
+from flask import request,jsonify
 from utils import UserManager, LoginManager
+from api.serializers import SignSchema
 
 # from werkzeug.security import generate_password_hash
 from models import User
 from .swagger import signup_model, login_model
-
+from marshmallow import post_load
 
 class Hello(Resource, MethodView):
     @swagger_api.doc()
@@ -20,8 +21,11 @@ class SignUp(Resource, MethodView):
     @swagger_api.expect(signup_model)
     def post(self):
         data = request.get_json()
-        message = UserManager().signup(data)
-        return message
+        new_acc = UserManager().signup(data)
+        # serializer=SignSchema()
+        # result=serializer.load(new_acc)
+        # person=serializer.dump(result)
+        return new_acc
 
 
 class Login(Resource, MethodView):

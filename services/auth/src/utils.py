@@ -1,7 +1,9 @@
+#from flask import jsonify
 from app import db, bcrypt
 from models import User
+from flask import jsonify
+from api.serializers import SignSchema
 from loggers import logger
-
 
 class UserManager:
 
@@ -15,6 +17,7 @@ class UserManager:
         
         try:
             if user == None:
+
                
                 hashed_password = bcrypt.generate_password_hash(data.get("password")).decode(
                     "utf-8"
@@ -28,8 +31,11 @@ class UserManager:
                 )
                 db.session.add(new_acc)
                 db.session.commit()
-                
-                return {"message": "success"}
+                serializer=SignSchema()
+                #result=serializer.load(new_acc)
+                person=serializer.dump(new_acc)
+                print(person)
+                return jsonify(person)
             else:
                 return {"message": "enter different email"}
         except Exception as e:
