@@ -4,7 +4,7 @@ from app import ma
 
 
 class SignSchema(Schema):
-    username = fields.Integer(required=True)
+    username = fields.String(required=True)
     email = fields.String(required=True)
     password = fields.String(required=True)
     first_name = fields.String(required=True)
