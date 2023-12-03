@@ -64,6 +64,7 @@ class User(BaseModel):
     @classmethod
     def get_user_details(cls, *criteria):
         return cls.query.get(*criteria)
+    
     @classmethod
     def get_all(cls):
         return cls.query.all()

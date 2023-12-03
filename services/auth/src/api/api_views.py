@@ -2,7 +2,7 @@ from flask_restx import Resource
 from flask.views import MethodView
 from app import swagger_api, db
 from flask import request, jsonify
-from utils import UserManager, LoginManager
+from utils import UserManager, LoginManager, UpdateManager
 
 
 # from serializers import UserSchema
@@ -13,6 +13,7 @@ from .swagger import (
     signup_model,
     login_model,
     contract_consumer_list_request_params,
+    update_model
 )
 
 from marshmallow import ValidationError, post_load
@@ -57,14 +58,27 @@ class UserDetails(Resource, MethodView):
     def get(self):
         id = request.args.get("id")
         user = UserManager().details(id)
-        print(user, "---------------")
+        #print(user, "---------------")
         data = UserSchema().dump(user)
-        print(data, "---------------")
+        #print(data, "---------------")
         return data
 
-class AllDetail(Resource,MethodView):
+class UserList(Resource,MethodView):
     @swagger_api.doc()
     def get(self):
         user = UserManager().alldetails()
         data = UserSchema(many=True).dump(user)
         return data
+
+class UpdateUser(Resource,MethodView):
+    @swagger_api.doc(params=contract_consumer_list_request_params)
+    @swagger_api.expect(update_model)
+    def put(self):
+        id = request.args.get("id")
+        data = request.get_json()
+        user = UpdateManager().update(id,data)
+        return user
+
+
+
+
