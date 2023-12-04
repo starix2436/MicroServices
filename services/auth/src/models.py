@@ -56,14 +56,6 @@ class User(BaseModel):
     def get_user(cls, **criteria):
         return cls.query.filter_by(**criteria, is_active=True)
 
-    @classmethod
-    def get_user_details(cls, **criteria):
-        return cls.query.filter_by(**criteria, is_active=True)
-
-    @classmethod
-    def get_all(cls, **criteria):
-        return cls.query.filter_by(**criteria, is_active=True).all()
-
 
 class PhoneNumber(BaseModel):
     mobile = db.Column(db.String(20), unique=True, nullable=False)

@@ -5,12 +5,12 @@ from loggers import logger
 
 class UserManager:
     def details(self, id):
-        user = User.get_user_details(id=id).first()
+        user = User.get_user(id=id).first()
         # show phone numbers also
         return user
 
     def alldetails(self):
-        user = User.get_all()
+        user = User.get_user().all()
         return user
 
     def filtername(self, filter_name):
@@ -76,11 +76,12 @@ class UpdateManager:
         db.session.commit()
         return {"message": "data updated"}
 
+
 class DeleteManager:
-    def delete(self,id):
+    def delete(self, id):
         delete_user = User.get_user_details(id=id).first()
         if not delete_user:
             return "user id doesnot exist"
         db.session.delete(delete_user)
         db.session.commit()
-        return {"message":"deleted successfully"}
+        return {"message": "deleted successfully"}
