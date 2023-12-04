@@ -17,7 +17,7 @@ from api.serializers import SignSchema, UserSchema
 class Hello(Resource, MethodView):
     @swagger_api.doc()
     def get(self):
-        return {"hello": "restx"}
+        return {"hello": "rest x"}
 
 
 class SignUp(Resource, MethodView):
