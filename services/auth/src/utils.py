@@ -75,3 +75,12 @@ class UpdateManager:
 
         db.session.commit()
         return {"message": "data updated"}
+
+class DeleteManager:
+    def delete(self,id):
+        delete_user = User.get_user_details(id=id).first()
+        if not delete_user:
+            return "user id doesnot exist"
+        db.session.delete(delete_user)
+        db.session.commit()
+        return {"message":"deleted successfully"}

@@ -2,7 +2,7 @@ from flask_restx import Resource
 from flask.views import MethodView
 from app import swagger_api
 from flask import request
-from utils import UserManager, LoginManager, UpdateManager
+from utils import UserManager, LoginManager, UpdateManager, DeleteManager
 from .swagger import (
     signup_model,
     login_model,
@@ -73,3 +73,13 @@ class UpdateUser(Resource, MethodView):
         data = request.get_json()
         user = UpdateManager().update(id, data)
         return user
+
+class DeleteUser(Resource, MethodView):
+    @swagger_api.doc(params=user_id_request_params)
+    def delete(self):
+        id = request.args.get("id")
+        user = DeleteManager().delete(id)
+        return user
+
+
+
