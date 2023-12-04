@@ -1,8 +1,16 @@
 from flask_restx import fields
 from app import swagger_api
 
-contract_consumer_list_request_params = {
+user_id_request_params = {
     "id": {"description": "Enter user id", "type": "int", "default": None}
+}
+
+filter_request_param = {
+    "filter name": {
+        "description": "Enter user first name to filter",
+        "type": "str",
+        "default": None,
+    }
 }
 
 signup_model = swagger_api.model(
@@ -24,7 +32,7 @@ login_model = swagger_api.model(
     },
 )
 
-update_model=swagger_api.model(
+update_model = swagger_api.model(
     "User",
     {
         "username": fields.String(required=True, description="A username"),

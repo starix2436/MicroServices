@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
-from flask_restx import Api, Namespace, apidoc
+from flask_restx import Api, apidoc
 
 
 app = Flask(__name__)
@@ -21,7 +21,7 @@ apidoc.apidoc.url_prefix = url_prefix
 swagger_api = Api(
     app,
     version="v1.0",
-    title="RELYbill",
+    title="MicroService",
     description=swagger_desc,
     doc=f"{url_prefix}/swagger/",
     authorizations={

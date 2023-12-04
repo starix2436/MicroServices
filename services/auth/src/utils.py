@@ -1,4 +1,3 @@
-from flask import request
 from app import db, bcrypt
 from models import User
 from loggers import logger
@@ -6,11 +5,16 @@ from loggers import logger
 
 class UserManager:
     def details(self, id):
-        user = User.get_user_details(id)
+        user = User.get_user_details(id=id).first()
         # show phone numbers also
         return user
+
     def alldetails(self):
-        user=User.get_all()
+        user = User.get_all()
+        return user
+
+    def filtername(self, filter_name):
+        user = User.get_user(first_name=filter_name)
         return user
 
     def signup(self, data):
@@ -57,19 +61,17 @@ class LoginManager:
             logger.error("some error occured", exc_info=e)
             return {"message": "an error occured "}
 
-class UpdateManager:
-    def update(self,id,data):
 
-        update_data = User.get_user_details(id)
+class UpdateManager:
+    def update(self, id, data):
+        update_data = User.get_user_details(id=id).first()
         if not update_data:
             return "user id doesnot exist"
-        
-        update_data.username=data.get('username',update_data.username)
-        update_data.email=data.get('email',update_data.email)
-        update_data.first_name=data.get('first_name',update_data.first_name)
-        update_data.last_name=data.get('last_name',update_data.last_name)
 
-        
+        update_data.username = data.get("username", update_data.username)
+        update_data.email = data.get("email", update_data.email)
+        update_data.first_name = data.get("first_name", update_data.first_name)
+        update_data.last_name = data.get("last_name", update_data.last_name)
+
         db.session.commit()
         return {"message": "data updated"}
-        
