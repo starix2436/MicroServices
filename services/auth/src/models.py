@@ -1,9 +1,7 @@
 from app import db
-from datetime import datetime
 from ulid import new as generate_ulid
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.sql import func
-from sqlalchemy_utils import PhoneNumberType
 
 
 class ULIDType(TypeDecorator):
@@ -38,9 +36,6 @@ class BaseModel(db.Model):
         return f"{self.__class__.__name__}: {self.id}"
 
 
-# signup_model=swagger_api.model
-
-
 class User(BaseModel):
     internal_id = db.Column(
         ULIDType, unique=True, index=True, default=lambda: str(generate_ulid())
@@ -62,16 +57,15 @@ class User(BaseModel):
         return cls.query.filter_by(**criteria, is_active=True)
 
     @classmethod
-    def get_user_details(cls, *criteria):
-        return cls.query.get(*criteria)
-    
+    def get_user_details(cls, **criteria):
+        return cls.query.filter_by(**criteria, is_active=True)
+
     @classmethod
-    def get_all(cls):
-        return cls.query.all()
+    def get_all(cls, **criteria):
+        return cls.query.filter_by(**criteria, is_active=True).all()
 
 
 class PhoneNumber(BaseModel):
-
     mobile = db.Column(db.String(20), unique=True, nullable=False)
     mobile2 = db.Column(db.String(20), unique=True)
     home = db.Column(db.String(20), unique=True)

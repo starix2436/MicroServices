@@ -1,6 +1,3 @@
-import os
-from datetime import datetime, timedelta
-
 DATABASE = {
     "NAME": "auth_db",
     "USER": "starix",
