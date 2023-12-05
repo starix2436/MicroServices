@@ -2,8 +2,9 @@ from app import db
 from ulid import new as generate_ulid
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.sql import func
-from enum import Enum
+from enum import Enum 
 
+from sqlalchemy_utils import ChoiceType
 
 class ULIDType(TypeDecorator):
     impl = CHAR(26)
@@ -37,11 +38,11 @@ class BaseModel(db.Model):
         return f"{self.__class__.__name__}: {self.id}"
 
 
-class NumberType(Enum):
-    mobile = "Mobile Number"
-    mobile2 = "Mobile2 Number"
-    home = "Home Number"
-    office = "Office Number"
+# class NumberType(Enum):
+#     mobile = "Mobile Number"
+#     mobile2 = "Mobile2 Number"
+#     home = "Home Number"
+#     office = "Office Number"
 
 
 class User(BaseModel):
@@ -63,7 +64,17 @@ class User(BaseModel):
         return cls.query.filter_by(**criteria, is_active=True)
 
 
+
+
+
 class PhoneNumber(BaseModel):
+    NUMBER_TYPE=[
+    ("mobile", "Mobile Number"),
+    ("mobile2", "Mobile2 Number"),
+    ("home","Home Number"),
+    ("office","Office Number")
+    ]
+
     mobile = db.Column(db.String(20), unique=True, nullable=False)
-    type = db.Column(db.Enum(NumberType))
+    type = db.Column(ChoiceType (NUMBER_TYPE))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), unique=True)
