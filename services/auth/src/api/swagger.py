@@ -6,11 +6,26 @@ user_id_request_params = {
 }
 
 filter_request_param = {
-    "filter name": {
+    "first name": {
         "description": "Enter user first name to filter",
         "type": "str",
         "default": None,
-    }
+    },
+    "last name": {
+        "description": "Enter user last name to filter",
+        "type": "str",
+        "default": None,
+    },
+    "username": {
+        "description": "Enter user username to filter",
+        "type": "str",
+        "default": None,
+    },
+    "email": {
+        "description": "Enter user email to filter",
+        "type": "str",
+        "default": None,
+    },
 }
 
 signup_model = swagger_api.model(

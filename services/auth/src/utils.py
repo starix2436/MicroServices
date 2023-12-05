@@ -1,9 +1,41 @@
 from app import db, bcrypt
 from models import User
 from loggers import logger
+from flask import request
 
 
 class UserManager:
+    def __init__(self, request):
+        args = request.args
+        self.first_name = args.get("first name")
+        self.last_name = args.get("last name")
+        self.username = args.get("username")
+        self.email = args.get("email")
+
+    def filter(self, user):
+        try:
+            if self.first_name:
+                user = User.query.filter(User.first_name == self.first_name)
+                return user
+
+            if self.last_name:
+                user = User.query.filter(User.last_name == self.last_name)
+                return user
+
+            if self.username:
+                user = User.query.filter(User.username == self.username)
+                return user
+
+            if self.email:
+                user = User.query.filter(User.email == self.email)
+                return user
+
+            return user
+
+        except Exception as e:
+            logger.error("some error occured", exc_info=e)
+            return []
+
     def details(self, id):
         user = User.get_user(id=id).first()
         # show phone numbers also
@@ -11,7 +43,7 @@ class UserManager:
 
     def alldetails(self):
         user = User.get_user().all()
-        return user
+        return self.filter(user)
 
     def filtername(self, filter_name):
         user = User.get_user(first_name=filter_name)
