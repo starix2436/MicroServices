@@ -54,13 +54,7 @@ class UserDetails(Resource, MethodView):
 class UserList(Resource, MethodView):
     @swagger_api.doc(params=filter_request_param)
     def get(self):
-        filter_name = request.args.get("filter name")
-        print(filter_name)
-        if filter_name:
-            user = UserManager().filtername(filter_name)
-            data = UserSchema(many=True).dump(user)
-            return data
-        user = UserManager().alldetails()
+        user = UserManager(request).alldetails()
         data = UserSchema(many=True).dump(user)
         return data
 
@@ -74,12 +68,10 @@ class UpdateUser(Resource, MethodView):
         user = UpdateManager().update(id, data)
         return user
 
+
 class DeleteUser(Resource, MethodView):
     @swagger_api.doc(params=user_id_request_params)
     def delete(self):
         id = request.args.get("id")
         user = DeleteManager().delete(id)
         return user
-
-
-
