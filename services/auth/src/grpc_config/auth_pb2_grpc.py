@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import auth_pb2 as auth__pb2
+from grpc_config import auth_pb2 as auth__pb2
 
 
 class NotificationsStub(object):
@@ -15,53 +15,65 @@ class NotificationsStub(object):
             channel: A grpc.Channel.
         """
         self.GetUserDetails = channel.unary_unary(
-                '/greet.Notifications/GetUserDetails',
-                request_serializer=auth__pb2.UserDetailRequest.SerializeToString,
-                response_deserializer=auth__pb2.UserDetailResponse.FromString,
-                )
+            "/greet.Notifications/GetUserDetails",
+            request_serializer=auth__pb2.UserDetailRequest.SerializeToString,
+            response_deserializer=auth__pb2.UserDetailResponse.FromString,
+        )
 
 
 class NotificationsServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def GetUserDetails(self, request, context):
-        """Unary
-        """
+        """Unary"""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_NotificationsServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetUserDetails': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetUserDetails,
-                    request_deserializer=auth__pb2.UserDetailRequest.FromString,
-                    response_serializer=auth__pb2.UserDetailResponse.SerializeToString,
-            ),
+        "GetUserDetails": grpc.unary_unary_rpc_method_handler(
+            servicer.GetUserDetails,
+            request_deserializer=auth__pb2.UserDetailRequest.FromString,
+            response_serializer=auth__pb2.UserDetailResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'greet.Notifications', rpc_method_handlers)
+        "greet.Notifications", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class Notifications(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetUserDetails(request,
+    def GetUserDetails(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/greet.Notifications/GetUserDetails',
+            "/greet.Notifications/GetUserDetails",
             auth__pb2.UserDetailRequest.SerializeToString,
             auth__pb2.UserDetailResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
