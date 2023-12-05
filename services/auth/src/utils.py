@@ -64,7 +64,7 @@ class LoginManager:
 
 class UpdateManager:
     def update(self, id, data):
-        update_data = User.get_user_details(id=id).first()
+        update_data = User.get_user(id=id).first()
         if not update_data:
             return "user id doesnot exist"
 
@@ -79,7 +79,7 @@ class UpdateManager:
 
 class DeleteManager:
     def delete(self, id):
-        delete_user = User.get_user_details(id=id).first()
+        delete_user = User.get_user(id=id).first()
         if not delete_user:
             return "user id doesnot exist"
         db.session.delete(delete_user)

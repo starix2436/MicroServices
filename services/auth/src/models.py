@@ -2,6 +2,7 @@ from app import db
 from ulid import new as generate_ulid
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.sql import func
+from enum import Enum
 
 
 class ULIDType(TypeDecorator):
@@ -36,6 +37,13 @@ class BaseModel(db.Model):
         return f"{self.__class__.__name__}: {self.id}"
 
 
+class NumberType(Enum):
+    mobile = "Mobile Number"
+    mobile2 = "Mobile2 Number"
+    home = "Home Number"
+    office = "Office Number"
+
+
 class User(BaseModel):
     internal_id = db.Column(
         ULIDType, unique=True, index=True, default=lambda: str(generate_ulid())
@@ -45,9 +53,7 @@ class User(BaseModel):
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    phone_numbers = db.relationship(
-        "PhoneNumber", back_populates="user", lazy="dynamic"
-    )
+    phone_numbers = db.relationship("PhoneNumber", backref="user", lazy="dynamic")
 
     def __repr__(self):
         return f"{self.__class__.__name__}: {self.username}"
@@ -59,8 +65,5 @@ class User(BaseModel):
 
 class PhoneNumber(BaseModel):
     mobile = db.Column(db.String(20), unique=True, nullable=False)
-    mobile2 = db.Column(db.String(20), unique=True)
-    home = db.Column(db.String(20), unique=True)
-    office = db.Column(db.String(20), unique=True)
+    type = db.Column(db.Enum(NumberType))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), unique=True)
-    user = db.relationship("User", back_populates="phone_numbers")
