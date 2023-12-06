@@ -1,16 +1,25 @@
-import grpc
 from concurrent import futures
-from grpc_config.auth_pb2_grpc import add_NotificationsServicer_to_server
-from grpc_config.auth import GetUser
+import grpc
+import grpc_config.auth_pb2
+import grpc_config.auth_pb2_grpc
+from loggers import logger
 
 
-def serve():
+class AuthServer(grpc_config.auth_pb2_grpc.NotificationsServicer):
+    def GetUserDetails(self,request,context):
+        logger.info("GetUserDetails request was made.")
+        detail_reply=grpc_config.auth_pb2.UserDetailResponse()
+        detail_reply.message=f"{request.id}"
+        return detail_reply
+
+
+def server():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    add_NotificationsServicer_to_server(GetUser(), server)
+    grpc_config.auth_pb2_grpc.add_NotificationsServicer_to_server(AuthServer(),server)
     server.add_insecure_port("localhost:50051")
     server.start()
     server.wait_for_termination()
 
 
-if __name__ == "__main__":
-    serve()
+if __name__=="__main__":
+    server()
