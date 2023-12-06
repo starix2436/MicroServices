@@ -1,7 +1,8 @@
 from app import db, bcrypt
 from models import User
 from loggers import logger
-#from flask import request
+
+# from flask import request
 
 
 class UserManager:

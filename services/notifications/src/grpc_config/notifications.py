@@ -19,7 +19,7 @@ import time
 def run():
     with grpc.insecure_channel("localhost:50051") as channel:
         stub = auth_pb2_grpc.NotificationsStub(channel)
-        detail_request = auth_pb2.UserDetailRequest(id=8)
+        detail_request = auth_pb2.UserDetailRequest(id=3)
         detail_reply = stub.GetUserDetails(detail_request)
         print(detail_reply)
 
