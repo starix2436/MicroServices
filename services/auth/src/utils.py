@@ -1,16 +1,17 @@
 from app import db, bcrypt
 from models import User
 from loggers import logger
-from flask import request
+#from flask import request
 
 
 class UserManager:
-    def __init__(self, request):
-        args = request.args
-        self.first_name = args.get("first name")
-        self.last_name = args.get("last name")
-        self.username = args.get("username")
-        self.email = args.get("email")
+    def __init__(self, request=None):
+        if request:
+            args = request.args
+            self.first_name = args.get("first name")
+            self.last_name = args.get("last name")
+            self.username = args.get("username")
+            self.email = args.get("email")
 
     def filter(self, user):
         try:

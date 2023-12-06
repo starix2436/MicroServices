@@ -7,12 +7,17 @@ from flask_restx import Api, apidoc
 
 app = Flask(__name__)
 app.config.from_pyfile("settings.py")
+app.app_context().push()
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 url_prefix = "/auth"
 
-from admin import *
+
+from flask_admin import Admin
+
+
+admin = Admin(app, name="Auth", template_mode="bootstrap3", url=f"{url_prefix}/admin")
 
 swagger_desc = ""
 

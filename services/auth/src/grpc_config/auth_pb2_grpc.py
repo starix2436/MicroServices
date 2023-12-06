@@ -25,11 +25,16 @@ class NotificationsServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def GetUserDetails(self, request, context):
+
         """Unary"""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    # def UserM(self,request):
+    #     from models import User as Us
+    #     user_data= Us.get_user(id=request.id).first()
+    #     return user_data
 
 def add_NotificationsServicer_to_server(servicer, server):
     rpc_method_handlers = {

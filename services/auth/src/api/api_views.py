@@ -2,7 +2,7 @@ from flask_restx import Resource
 from flask.views import MethodView
 from app import swagger_api
 from flask import request
-from utils import UserManager, LoginManager, UpdateManager, DeleteManager
+from utils import *
 from .swagger import (
     signup_model,
     login_model,
