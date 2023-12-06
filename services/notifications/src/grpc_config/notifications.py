@@ -1,8 +1,9 @@
 import grpc
 import auth_pb2
 import auth_pb2_grpc
-import time
-
+#import time
+from notifications.src.models import EmailNotification
+from app import db 
 # client
 
 # def get_client_stream_requests():
@@ -15,13 +16,34 @@ import time
 #         yield detail_request
 #         time.sleep(1)
 
+# def store_data(detail_reply):
 
+#     #client_data = EmailNotification(detail_reply)
+
+#     print(detail_reply)
+#     # db.session.add(client_data)
+#     # db.session.commit()
+    
 def run():
     with grpc.insecure_channel("localhost:50051") as channel:
         stub = auth_pb2_grpc.NotificationsStub(channel)
         detail_request = auth_pb2.UserDetailRequest(id=3)
         detail_reply = stub.GetUserDetails(detail_request)
         print(detail_reply)
+        print(detail_reply.first_name)
+
+        user_data= EmailNotification(
+            first_name=detail_reply.first_name,
+            last_name=detail_reply.last_name,
+            email=detail_reply.email,
+
+        )
+        db.session.add(user_data)
+        db.session.commit
+
+        # store_data(detail_reply)
+
+
 
 
 if __name__ == "__main__":
