@@ -1,8 +1,9 @@
 import grpc
-import grpc_config.auth_pb2
-import grpc_config.auth_pb2_grpc
+import auth_pb2
+import auth_pb2_grpc
 import time
-#client 
+
+# client
 
 # def get_client_stream_requests():
 #     while True:
@@ -14,17 +15,17 @@ import time
 #         yield detail_request
 #         time.sleep(1)
 
+
 def run():
-    with grpc.insecure_channel('localhost:50051') as channel:
-        stub = grpc_config.auth_pb2_grpc.NotificationsStub(channel)
-        
-        detail_request = grpc_config.auth_pb2.UserDetailRequest(id=6)
-        detail_reply =stub.GetUserDetails(detail_request)
+    with grpc.insecure_channel("localhost:50051") as channel:
+        stub = auth_pb2_grpc.NotificationsStub(channel)
+        detail_request = auth_pb2.UserDetailRequest(id=6)
+        detail_reply = stub.GetUserDetails(detail_request)
         print(detail_reply)
 
-if __name__=="__main__":
-    run()
 
+if __name__ == "__main__":
+    run()
 
 
 # def run():
